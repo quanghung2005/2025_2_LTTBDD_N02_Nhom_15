@@ -7,15 +7,14 @@
 - **Đề tài:** Phần mềm Nhắc Thuốc (Pill Reminder App).
 - **Môn học:** Lập trình cho thiết bị di động.
 - **Giảng viên hướng dẫn:** Thầy que.nguyenxuan@phenikaa-uni.edu.vn.
-- **Kho lưu trữ (Repository):** `2025_2_LTTBDD_N0x_Nhom_i`.
+- **Kho lưu trữ (Repository):** `2025_2_LTTBDD_N02_Nhom_15`.
 
 ### Thành viên nhóm
 
 | STT | Họ và Tên | Mã số Sinh viên | Vai trò | Tỉ lệ đóng góp |
-| :--- | :--- | :--- | :--- | :--- |
-| 1 | [Tên Thành Viên 1] | [MSSV 1] | Nhóm trưởng / Developer | 100% |
-| 2 | [Tên Thành Viên 2] | [MSSV 2] | Developer / Designer | 100% |
-*(Ghi chú: Vui lòng thay thế mã nhóm N0x, Nhom_i, và thông tin thành viên bằng thông tin thật của nhóm bạn)*
+
+| 1 | [triệu quang hưng] | [23010838] | Nhóm trưởng / Developer | 100% |
+
 
 ## Tính năng Chính (Features)
 
@@ -31,24 +30,9 @@
 *   **Cơ sở dữ liệu:** Không (Lưu tạm vào biến / Mảng trong RAM để dễ dàng demo UI).
 *   **Thư viện:** 
     *   Đa ngôn ngữ: `intl`
-    *   Giao diện: `google_fonts` (nếu dùng font ngoài), icon set tuỳ chỉnh.
+    *   Giao diện: `google_fonts` , icon set tuỳ chỉnh.
 
-## Hướng dẫn Chạy Ứng dụng (Getting Started)
-
-Dự án này là điểm khởi đầu cho một ứng dụng Flutter. Để chạy source code này trên máy của bạn:
-
-1. Đảm bảo bạn đã cài đặt Flutter SDK và cấu hình đúng biến môi trường.
-2. Clone repository này về máy.
-3. Chạy lệnh để cài đặt các package:
-   ```bash
-   flutter pub get
-   ```
-4. Chọn máy ảo (Emulator) hoặc thiết bị vật lý thật.
-5. Chạy ứng dụng:
-   ```bash
-   flutter run
-   ```
-
+```
 Tài nguyên tham khảo dành cho người mới:
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
