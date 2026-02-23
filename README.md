@@ -26,13 +26,13 @@
 
 ## Yêu cầu Kỹ thuật (Technical Requirements)
 
-*   **Framework:** Flutter (Hỗ trợ Build iOS & Android).
-*   **Cơ sở dữ liệu:** Không (Lưu tạm vào biến / Mảng trong RAM để dễ dàng demo UI).
+*   **Framework:** Flutter (Hỗ trợ Build Android).
+*   **Cơ sở dữ liệu:** Không (Lưu tạm vào biến để dễ dàng demo UI).
 *   **Thư viện:** 
     *   Đa ngôn ngữ: `intl`
-    *   Giao diện: `google_fonts` , icon set tuỳ chỉnh.
+    *   Giao diện: `google_fonts`, icon set tuỳ chỉnh.
 
-```
+
 Tài nguyên tham khảo dành cho người mới:
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
