@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
+import '../widgets/medication_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -44,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    l10n?.today_summary(0) ?? 'Bạn có 0 liều thuốc hôm nay',
+                    l10n?.today_summary(2) ?? 'Bạn có 2 liều thuốc hôm nay',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -58,7 +59,6 @@ class HomeScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // List Title
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
@@ -74,25 +74,24 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 10),
 
             Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.event_note,
-                      size: 60,
-                      color: AppTheme.textColorLight,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      l10n?.no_meds_today ?? 'Không có lịch uống thuốc nào.',
-                      style: const TextStyle(
-                        color: AppTheme.textColorLight,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
+              child: ListView(
+                padding: const EdgeInsets.only(bottom: 80, left: 16, right: 16),
+                children: const [
+                  MedicationCard(
+                    time: '08:00',
+                    medicationName: 'Paracetamol',
+                    dosage: '1 viên - Sau khi ăn',
+                    categoryIcon: Icons.medication_outlined,
+                    status: 'taken',
+                  ),
+                  MedicationCard(
+                    time: '20:00',
+                    medicationName: 'Vitamin C 500mg',
+                    dosage: '1 viên - Trước khi ăn',
+                    categoryIcon: Icons.healing,
+                    status: 'upcoming',
+                  ),
+                ],
               ),
             ),
           ],

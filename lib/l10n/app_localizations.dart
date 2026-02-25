@@ -92,57 +92,154 @@ abstract class AppLocalizations {
         GlobalWidgetsLocalizations.delegate,
       ];
 
+  /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('vi'),
   ];
 
+  /// No description provided for @app_title.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc Thuốc'**
   String get app_title;
 
+  /// No description provided for @nav_home.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay'**
   String get nav_home;
 
+  /// No description provided for @nav_medicines.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh sách'**
   String get nav_medicines;
 
+  /// No description provided for @nav_settings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cài đặt'**
   String get nav_settings;
 
+  /// No description provided for @nav_about.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tin Nhóm'**
   String get nav_about;
 
+  /// No description provided for @hello_user.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chào bạn,'**
   String get hello_user;
 
+  /// No description provided for @today_summary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có {count} liều thuốc hôm nay'**
   String today_summary(int count);
 
+  /// No description provided for @no_meds_today.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có lịch uống thuốc nào.'**
   String get no_meds_today;
 
+  /// No description provided for @status_taken.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã uống'**
   String get status_taken;
 
+  /// No description provided for @status_skipped.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ qua'**
   String get status_skipped;
 
+  /// No description provided for @status_upcoming.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sắp tới'**
   String get status_upcoming;
 
+  /// No description provided for @add_med_title.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm thuốc mới'**
   String get add_med_title;
 
+  /// No description provided for @input_med_name.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên thuốc (VD: Paracetamol)'**
   String get input_med_name;
 
+  /// No description provided for @input_dosage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Liều lượng (VD: 1 viên)'**
   String get input_dosage;
 
+  /// No description provided for @input_time.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giờ uống'**
   String get input_time;
 
+  /// No description provided for @btn_save.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu lịch nhắc'**
   String get btn_save;
 
+  /// No description provided for @btn_cancel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hủy'**
   String get btn_cancel;
 
+  /// No description provided for @setting_language.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngôn ngữ / Language'**
   String get setting_language;
 
+  /// No description provided for @lang_vn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếng Việt'**
   String get lang_vn;
 
+  /// No description provided for @lang_en.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếng Anh'**
   String get lang_en;
 
+  /// No description provided for @about_topic.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đề tài: Phần mềm Nhắc Thuốc'**
   String get about_topic;
 
+  /// No description provided for @about_subject.
+  ///
+  /// In vi, this message translates to:
+  /// **'Môn học: Lập trình TB Di động'**
   String get about_subject;
 
+  /// No description provided for @about_instructor.
+  ///
+  /// In vi, this message translates to:
+  /// **'GVHD: {name}'**
   String about_instructor(String name);
 
+  /// No description provided for @about_team.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm phát triển'**
   String get about_team;
 }
 
@@ -164,6 +261,7 @@ class _AppLocalizationsDelegate
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
