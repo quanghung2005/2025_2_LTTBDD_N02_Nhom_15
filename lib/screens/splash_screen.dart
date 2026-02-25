@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
+import 'home_screen.dart';
 import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 
@@ -20,13 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
   _navigateToHome() async {
     await Future.delayed(const Duration(milliseconds: 2000), () {});
 
-    if (!mounted) return;
-
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => const MyHomePage(title: 'Trang chủ Nhắc Thuốc'),
-      ),
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
     );
   }
 
