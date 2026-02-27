@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'add_med_screen.dart';
+import 'about_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 import '../widgets/medication_card.dart';
@@ -41,7 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.info_outline),
             tooltip: l10n?.nav_about ?? 'Thông tin',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutScreen()),
+              );
+            },
           ),
         ],
       ),
