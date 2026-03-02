@@ -241,6 +241,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Nhóm phát triển'**
   String get about_team;
+
+  /// No description provided for @notif_title.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đến giờ uống thuốc!'**
+  String get notif_title;
+
+  /// No description provided for @notif_skip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ qua'**
+  String get notif_skip;
+
+  /// No description provided for @notif_taken.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã uống'**
+  String get notif_taken;
 }
 
 class _AppLocalizationsDelegate

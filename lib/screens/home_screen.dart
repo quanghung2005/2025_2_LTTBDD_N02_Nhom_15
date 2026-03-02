@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'add_med_screen.dart';
 import 'about_screen.dart';
@@ -14,6 +16,128 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startMockNotificationTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startMockNotificationTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      _checkAndShowNotification();
+    });
+  }
+
+  void _checkAndShowNotification() {
+    final now = DateTime.now();
+    final timeFormat = DateFormat('HH:mm');
+    final currentTimeStr = timeFormat.format(now);
+
+    for (int i = 0; i < _medications.length; i++) {
+      final med = _medications[i];
+      if (med['status'] == 'upcoming' &&
+          med['time'] == currentTimeStr &&
+          med['notified'] != true) {
+        setState(() {
+          _medications[i]['notified'] = true;
+        });
+
+        _showNotificationPopup(med, i);
+      }
+    }
+  }
+
+  void _showNotificationPopup(Map<String, dynamic> med, int index) {
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: [
+              const Icon(
+                Icons.notifications_active,
+                color: Colors.redAccent,
+                size: 28,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n?.notif_title ?? 'Đến giờ uống thuốc!',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${med['medicationName']}',
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.primaryColor,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text('${med['dosage']}', style: const TextStyle(fontSize: 16)),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _medications[index]['status'] = 'skipped';
+                });
+                Navigator.pop(context);
+              },
+              child: Text(
+                l10n?.notif_skip ?? 'Bỏ qua',
+                style: const TextStyle(color: Colors.grey, fontSize: 16),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _medications[index]['status'] = 'taken';
+                });
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+              ),
+              child: Text(
+                l10n?.notif_taken ?? 'Đã uống',
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   final List<Map<String, dynamic>> _medications = [
     {
       'time': '08:00',

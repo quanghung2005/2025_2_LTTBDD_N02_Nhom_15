@@ -83,4 +83,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get about_team => 'Development Team';
+
+  @override
+  String get notif_title => 'Time for your meds!';
+
+  @override
+  String get notif_skip => 'Skip';
+
+  @override
+  String get notif_taken => 'Taken';
 }

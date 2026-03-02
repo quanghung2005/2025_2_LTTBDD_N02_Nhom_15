@@ -40,5 +40,9 @@
       }
     }
   },
-  "about_team": "Nhóm phát triển"
+  "about_team": "Nhóm phát triển",
+  
+  "notif_title": "Đến giờ uống thuốc!",
+  "notif_skip": "Bỏ qua",
+  "notif_taken": "Đã uống"
 }

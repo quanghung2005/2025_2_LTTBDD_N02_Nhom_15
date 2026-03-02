@@ -83,4 +83,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get about_team => 'Nhóm phát triển';
+
+  @override
+  String get notif_title => 'Đến giờ uống thuốc!';
+
+  @override
+  String get notif_skip => 'Bỏ qua';
+
+  @override
+  String get notif_taken => 'Đã uống';
 }

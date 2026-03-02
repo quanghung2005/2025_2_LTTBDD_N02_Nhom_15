@@ -40,5 +40,9 @@
       }
     }
   },
-  "about_team": "Development Team"
+  "about_team": "Development Team",
+  
+  "notif_title": "Time for your meds!",
+  "notif_skip": "Skip",
+  "notif_taken": "Taken"
 }
