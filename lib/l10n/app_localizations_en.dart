@@ -1,10 +1,7 @@
-// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
-// ignore_for_file: type=lint
 
-/// The translations for English (`en`).
 class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
@@ -92,4 +89,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notif_taken => 'Taken';
+
+  @override
+  String get nav_history => 'History';
+
+  @override
+  String get filter_all => 'All';
+
+  @override
+  String get filter_vitamin => 'Vitamins & Calcium';
+
+  @override
+  String get filter_antibiotic => 'Antibiotics';
+
+  @override
+  String get filter_special => 'Special Meds';
+
+  @override
+  String get action_edit => 'Edit';
+
+  @override
+  String get action_delete => 'Delete';
+
+  @override
+  String get edit_med_title => 'Edit Medication';
+
+  @override
+  String get btn_update => 'Update';
+
+  @override
+  String get delete_confirm =>
+      'Are you sure you want to delete this medication?';
 }
+

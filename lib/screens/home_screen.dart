@@ -291,6 +291,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                 _medications[index]['status'] = newStatus;
                               });
                             },
+                            onEdit: () async {
+                              final updatedMed =
+                                  await Navigator.push<Map<String, dynamic>>(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AddMedScreen(initialData: med),
+                                    ),
+                                  );
+                              if (updatedMed != null) {
+                                setState(() {
+                                  _medications[index] = updatedMed;
+                                  _medications.sort(
+                                    (a, b) => (a['time'] as String).compareTo(
+                                      b['time'] as String,
+                                    ),
+                                  );
+                                });
+                              }
+                            },
+                            onDelete: () {
+                              setState(() {
+                                _medications.removeAt(index);
+                              });
+                            },
                           ),
                         );
                       },

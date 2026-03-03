@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/language_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 
@@ -9,51 +11,65 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n?.nav_settings ?? 'Cài đặt')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              l10n?.setting_language ?? 'Ngôn ngữ / Language',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.textColorLight,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.withAlpha(50)),
-              ),
-              child: Column(
-                children: [
-                  RadioListTile<String>(
-                    title: Text(l10n?.lang_vn ?? 'Tiếng Việt'),
-                    value: 'vi',
-                    groupValue: 'vi',
-                    activeColor: AppTheme.primaryColor,
-                    onChanged: (value) {},
+    return Consumer<LanguageProvider>(
+      builder: (context, languageProvider, child) {
+        final currentLang = languageProvider.currentLocale.languageCode;
+
+        return Scaffold(
+          appBar: AppBar(title: Text(l10n?.nav_settings ?? 'Cài đặt')),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n?.setting_language ?? 'Ngôn ngữ / Language',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.textColorLight,
                   ),
-                  const Divider(height: 1),
-                  RadioListTile<String>(
-                    title: Text(l10n?.lang_en ?? 'English'),
-                    value: 'en',
-                    groupValue: 'vi',
-                    activeColor: AppTheme.primaryColor,
-                    onChanged: (value) {},
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.grey.withAlpha(50)),
                   ),
-                ],
-              ),
+                  child: Column(
+                    children: [
+                      RadioListTile<String>(
+                        title: Text(l10n?.lang_vn ?? 'Tiếng Việt'),
+                        value: 'vi',
+                        groupValue: currentLang,
+                        activeColor: AppTheme.primaryColor,
+                        onChanged: (value) {
+                          if (value != null) {
+                            languageProvider.changeLanguage(value);
+                          }
+                        },
+                      ),
+                      const Divider(height: 1),
+                      RadioListTile<String>(
+                        title: Text(l10n?.lang_en ?? 'English'),
+                        value: 'en',
+                        groupValue: currentLang,
+                        activeColor: AppTheme.primaryColor,
+                        onChanged: (value) {
+                          if (value != null) {
+                            languageProvider.changeLanguage(value);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

@@ -44,5 +44,17 @@
   
   "notif_title": "Đến giờ uống thuốc!",
   "notif_skip": "Bỏ qua",
-  "notif_taken": "Đã uống"
+  "notif_taken": "Đã uống",
+
+  "nav_history": "Lịch sử",
+  "filter_all": "Tất cả",
+  "filter_vitamin": "Vitamin & Canxi",
+  "filter_antibiotic": "Kháng sinh",
+  "filter_special": "Thuốc đặc trị",
+  
+  "action_edit": "Sửa",
+  "action_delete": "Xóa",
+  "edit_med_title": "Cập nhật thông tin",
+  "btn_update": "Cập nhật",
+  "delete_confirm": "Bạn có chắc chắn muốn xóa thuốc này?"
 }

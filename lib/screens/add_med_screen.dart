@@ -3,7 +3,8 @@ import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 
 class AddMedScreen extends StatefulWidget {
-  const AddMedScreen({super.key});
+  final Map<String, dynamic>? initialData;
+  const AddMedScreen({super.key, this.initialData});
 
   @override
   State<AddMedScreen> createState() => _AddMedScreenState();
@@ -13,6 +14,24 @@ class _AddMedScreenState extends State<AddMedScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dosageController = TextEditingController();
   TimeOfDay _selectedTime = TimeOfDay.now();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialData != null) {
+      _nameController.text = widget.initialData!['medicationName'] as String;
+      _dosageController.text = widget.initialData!['dosage'] as String;
+
+      final timeStr = widget.initialData!['time'] as String;
+      final parts = timeStr.split(':');
+      if (parts.length == 2) {
+        _selectedTime = TimeOfDay(
+          hour: int.tryParse(parts[0]) ?? TimeOfDay.now().hour,
+          minute: int.tryParse(parts[1]) ?? TimeOfDay.now().minute,
+        );
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -38,7 +57,13 @@ class _AddMedScreenState extends State<AddMedScreen> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n?.add_med_title ?? 'Thêm thuốc mới')),
+      appBar: AppBar(
+        title: Text(
+          widget.initialData != null
+              ? (l10n?.edit_med_title ?? 'Cập nhật thông tin')
+              : (l10n?.add_med_title ?? 'Thêm thuốc mới'),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -173,7 +198,9 @@ class _AddMedScreenState extends State<AddMedScreen> {
                   }
                 },
                 child: Text(
-                  l10n?.btn_save ?? 'Lưu lịch nhắc',
+                  widget.initialData != null
+                      ? (l10n?.btn_update ?? 'Cập nhật')
+                      : (l10n?.btn_save ?? 'Lưu lịch nhắc'),
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

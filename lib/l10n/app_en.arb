@@ -44,5 +44,17 @@
   
   "notif_title": "Time for your meds!",
   "notif_skip": "Skip",
-  "notif_taken": "Taken"
+  "notif_taken": "Taken",
+
+  "nav_history": "History",
+  "filter_all": "All",
+  "filter_vitamin": "Vitamins & Calcium",
+  "filter_antibiotic": "Antibiotics",
+  "filter_special": "Special Meds",
+  
+  "action_edit": "Edit",
+  "action_delete": "Delete",
+  "edit_med_title": "Edit Medication",
+  "btn_update": "Update",
+  "delete_confirm": "Are you sure you want to delete this medication?"
 }

@@ -8,6 +8,9 @@ class MedicationCard extends StatelessWidget {
   final String dosage;
   final IconData categoryIcon;
   final String status;
+  final ValueChanged<String>? onStatusChanged;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   const MedicationCard({
     super.key,
@@ -16,6 +19,9 @@ class MedicationCard extends StatelessWidget {
     required this.dosage,
     required this.categoryIcon,
     required this.status,
+    this.onStatusChanged,
+    this.onEdit,
+    this.onDelete,
   });
 
   @override
@@ -120,6 +126,95 @@ class MedicationCard extends StatelessWidget {
                 ],
               ),
             ),
+            if (onStatusChanged != null)
+              PopupMenuButton<String>(
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: AppTheme.textColorLight,
+                ),
+                onSelected: (value) {
+                  if (value == 'edit') {
+                    onEdit?.call();
+                  } else if (value == 'delete') {
+                    if (onDelete != null) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(l10n?.action_delete ?? 'Xóa'),
+                          content: Text(
+                            l10n?.delete_confirm ??
+                                'Bạn có chắc chắn muốn xóa thuốc này?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(l10n?.btn_cancel ?? 'Hủy'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                onDelete!();
+                              },
+                              style: TextButton.styleFrom(
+                                foregroundColor: AppTheme.dangerColor,
+                              ),
+                              child: Text(l10n?.action_delete ?? 'Xóa'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  } else {
+                    onStatusChanged?.call(value);
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'taken',
+                    child: Text(l10n?.status_taken ?? 'Đã uống'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'skipped',
+                    child: Text(l10n?.status_skipped ?? 'Bỏ qua'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'upcoming',
+                    child: Text(l10n?.status_upcoming ?? 'Sắp tới'),
+                  ),
+                  const PopupMenuDivider(),
+                  PopupMenuItem<String>(
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.edit,
+                          size: 18,
+                          color: AppTheme.primaryColor,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(l10n?.action_edit ?? 'Sửa'),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.delete,
+                          size: 18,
+                          color: AppTheme.dangerColor,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          l10n?.action_delete ?? 'Xóa',
+                          style: const TextStyle(color: AppTheme.dangerColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

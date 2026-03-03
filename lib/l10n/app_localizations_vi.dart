@@ -1,10 +1,7 @@
-// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
-// ignore_for_file: type=lint
 
-/// The translations for Vietnamese (`vi`).
 class AppLocalizationsVi extends AppLocalizations {
   AppLocalizationsVi([String locale = 'vi']) : super(locale);
 
@@ -92,4 +89,35 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get notif_taken => 'Đã uống';
+
+  @override
+  String get nav_history => 'Lịch sử';
+
+  @override
+  String get filter_all => 'Tất cả';
+
+  @override
+  String get filter_vitamin => 'Vitamin & Canxi';
+
+  @override
+  String get filter_antibiotic => 'Kháng sinh';
+
+  @override
+  String get filter_special => 'Thuốc đặc trị';
+
+  @override
+  String get action_edit => 'Sửa';
+
+  @override
+  String get action_delete => 'Xóa';
+
+  @override
+  String get edit_med_title => 'Cập nhật thông tin';
+
+  @override
+  String get btn_update => 'Cập nhật';
+
+  @override
+  String get delete_confirm => 'Bạn có chắc chắn muốn xóa thuốc này?';
 }
+
