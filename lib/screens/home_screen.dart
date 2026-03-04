@@ -15,19 +15,23 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   Timer? _timer;
   String _selectedFilter = 'all';
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     _startMockNotificationTimer();
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -148,6 +152,14 @@ class _HomeScreenState extends State<HomeScreen> {
       'status': 'taken',
     },
     {
+      'time': '12:00',
+      'medicationName': 'Amoxicillin',
+      'dosage': '1 viên - Sau khi ăn',
+      'category': 'antibiotic',
+      'categoryIcon': Icons.medication,
+      'status': 'skipped',
+    },
+    {
       'time': '20:00',
       'medicationName': 'Vitamin C 500mg',
       'dosage': '1 viên - Trước khi ăn',
@@ -155,7 +167,101 @@ class _HomeScreenState extends State<HomeScreen> {
       'categoryIcon': Icons.healing,
       'status': 'upcoming',
     },
+    {
+      'time': '21:00',
+      'medicationName': 'Canxi D3',
+      'dosage': '1 viên - Sau khi ăn',
+      'category': 'vitamin',
+      'categoryIcon': Icons.healing,
+      'status': 'upcoming',
+    },
   ];
+
+  Widget _buildMedList(
+    List<Map<String, dynamic>> meds,
+    AppLocalizations? l10n,
+  ) {
+    if (meds.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.event_note,
+              size: 60,
+              color: AppTheme.textColorLight,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              l10n?.no_meds_today ?? 'Không có lịch uống thuốc nào.',
+              style: const TextStyle(
+                color: AppTheme.textColorLight,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 80, left: 16, right: 16),
+      itemCount: meds.length,
+      itemBuilder: (context, index) {
+        final med = meds[index];
+        final originalIndex = _medications.indexOf(med);
+
+        return TweenAnimationBuilder(
+          key: ValueKey(
+            med['medicationName'].toString() + med['time'].toString(),
+          ),
+          tween: Tween<double>(begin: 0.0, end: 1.0),
+          duration: Duration(milliseconds: 300 + (index * 100).clamp(0, 500)),
+          curve: Curves.easeOutQuart,
+          builder: (context, value, child) {
+            return Transform.translate(
+              offset: Offset(0, 20 * (1 - value)),
+              child: Opacity(opacity: value, child: child),
+            );
+          },
+          child: MedicationCard(
+            time: med['time'] as String,
+            medicationName: med['medicationName'] as String,
+            dosage: med['dosage'] as String,
+            categoryIcon: med['categoryIcon'] as IconData,
+            status: med['status'] as String,
+            onStatusChanged: (newStatus) {
+              setState(() {
+                _medications[originalIndex]['status'] = newStatus;
+              });
+            },
+            onEdit: () async {
+              final updatedMed = await Navigator.push<Map<String, dynamic>>(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddMedScreen(initialData: med),
+                ),
+              );
+              if (updatedMed != null) {
+                setState(() {
+                  _medications[originalIndex] = updatedMed;
+                  _medications.sort(
+                    (a, b) =>
+                        (a['time'] as String).compareTo(b['time'] as String),
+                  );
+                });
+              }
+            },
+            onDelete: () {
+              setState(() {
+                _medications.removeAt(originalIndex);
+              });
+            },
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +273,28 @@ class _HomeScreenState extends State<HomeScreen> {
       {'key': 'antibiotic', 'label': l10n?.filter_antibiotic ?? 'Kháng sinh'},
       {'key': 'special', 'label': l10n?.filter_special ?? 'Thuốc đặc trị'},
     ];
+
+    final upcomingMeds = _selectedFilter == 'all'
+        ? _medications.where((m) => m['status'] == 'upcoming').toList()
+        : _medications
+              .where(
+                (m) =>
+                    m['status'] == 'upcoming' &&
+                    m['category'] == _selectedFilter,
+              )
+              .toList();
+
+    final historyMeds = _selectedFilter == 'all'
+        ? _medications
+              .where((m) => m['status'] == 'taken' || m['status'] == 'skipped')
+              .toList()
+        : _medications
+              .where(
+                (m) =>
+                    (m['status'] == 'taken' || m['status'] == 'skipped') &&
+                    m['category'] == _selectedFilter,
+              )
+              .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -231,21 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            const SizedBox(height: 16),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                l10n?.nav_medicines ?? 'Danh sách',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.textColorDark,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
 
             SizedBox(
               height: 40,
@@ -277,109 +391,45 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
+
+            TabBar(
+              controller: _tabController,
+              labelColor: AppTheme.primaryColor,
+              unselectedLabelColor: AppTheme.textColorLight,
+              indicatorColor: AppTheme.primaryColor,
+              indicatorWeight: 3,
+              tabs: [
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.today, size: 18),
+                      const SizedBox(width: 6),
+                      Text(l10n?.nav_home ?? 'Hôm nay'),
+                    ],
+                  ),
+                ),
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.history, size: 18),
+                      const SizedBox(width: 6),
+                      Text(l10n?.nav_history ?? 'Lịch sử'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
 
             Expanded(
-              child: Builder(
-                builder: (context) {
-                  final filteredMeds = _selectedFilter == 'all'
-                      ? _medications
-                      : _medications
-                            .where((m) => m['category'] == _selectedFilter)
-                            .toList();
-
-                  if (filteredMeds.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.event_note,
-                            size: 60,
-                            color: AppTheme.textColorLight,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            l10n?.no_meds_today ??
-                                'Không có lịch uống thuốc nào.',
-                            style: const TextStyle(
-                              color: AppTheme.textColorLight,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  return ListView.builder(
-                    padding: const EdgeInsets.only(
-                      bottom: 80,
-                      left: 16,
-                      right: 16,
-                    ),
-                    itemCount: filteredMeds.length,
-                    itemBuilder: (context, index) {
-                      final med = filteredMeds[index];
-                      final originalIndex = _medications.indexOf(med);
-
-                      return TweenAnimationBuilder(
-                        key: ValueKey(
-                          med['medicationName'].toString() +
-                              med['time'].toString(),
-                        ),
-                        tween: Tween<double>(begin: 0.0, end: 1.0),
-                        duration: Duration(
-                          milliseconds: 300 + (index * 100).clamp(0, 500),
-                        ),
-                        curve: Curves.easeOutQuart,
-                        builder: (context, value, child) {
-                          return Transform.translate(
-                            offset: Offset(0, 20 * (1 - value)),
-                            child: Opacity(opacity: value, child: child),
-                          );
-                        },
-                        child: MedicationCard(
-                          time: med['time'] as String,
-                          medicationName: med['medicationName'] as String,
-                          dosage: med['dosage'] as String,
-                          categoryIcon: med['categoryIcon'] as IconData,
-                          status: med['status'] as String,
-                          onStatusChanged: (newStatus) {
-                            setState(() {
-                              _medications[originalIndex]['status'] = newStatus;
-                            });
-                          },
-                          onEdit: () async {
-                            final updatedMed =
-                                await Navigator.push<Map<String, dynamic>>(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        AddMedScreen(initialData: med),
-                                  ),
-                                );
-                            if (updatedMed != null) {
-                              setState(() {
-                                _medications[originalIndex] = updatedMed;
-                                _medications.sort(
-                                  (a, b) => (a['time'] as String).compareTo(
-                                    b['time'] as String,
-                                  ),
-                                );
-                              });
-                            }
-                          },
-                          onDelete: () {
-                            setState(() {
-                              _medications.removeAt(originalIndex);
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  );
-                },
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildMedList(upcomingMeds, l10n),
+                  _buildMedList(historyMeds, l10n),
+                ],
               ),
             ),
           ],
